@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorterGroup.Challenge", "PorterGroup.Challenge\PorterGroup.Challenge.csproj", "{FFDAA4A2-91C8-44DA-926C-493239DCDBCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorterGroup.Challenge.Tests", "PorterGroup.Challenge.Tests\PorterGroup.Challenge.Tests.csproj", "{8DC8AD7C-3C69-47A2-BB1A-70DE9ACF3D57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFDAA4A2-91C8-44DA-926C-493239DCDBCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFDAA4A2-91C8-44DA-926C-493239DCDBCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFDAA4A2-91C8-44DA-926C-493239DCDBCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFDAA4A2-91C8-44DA-926C-493239DCDBCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DC8AD7C-3C69-47A2-BB1A-70DE9ACF3D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DC8AD7C-3C69-47A2-BB1A-70DE9ACF3D57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DC8AD7C-3C69-47A2-BB1A-70DE9ACF3D57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DC8AD7C-3C69-47A2-BB1A-70DE9ACF3D57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
