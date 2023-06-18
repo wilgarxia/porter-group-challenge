@@ -3,8 +3,8 @@ namespace PorterGroup.Challenge.Tests;
 public class NumberWriterTests
 {
     [Theory]
-    [InlineData(-100)]
-    [InlineData(100)]
+    [InlineData(-1000)]
+    [InlineData(1000)]
     public void ConvertToWordsShouldThrowExceptionWhenGivenArgumentIsOutOfRange(int number)
     {
         // Act
@@ -31,6 +31,9 @@ public class ConvertToWordsData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
+        yield return new object[] { -123, "menos cento e vinte e três" };
+        yield return new object[] { -101, "menos cento e um" };
+        yield return new object[] { -100, "menos cem" };
         yield return new object[] { -21, "menos vinte e um" };
         yield return new object[] { -10, "menos dez" };
         yield return new object[] { -1, "menos um" };
@@ -69,7 +72,18 @@ public class ConvertToWordsData : IEnumerable<object[]>
         yield return new object[] { 80, "oitenta" };
         yield return new object[] { 87, "oitenta e sete" };
         yield return new object[] { 90, "noventa" };
-        yield return new object[] { 98, "noventa e oito" };        
+        yield return new object[] { 98, "noventa e oito" };
+        yield return new object[] { 100, "cem" };
+        yield return new object[] { 101, "cento e um" };
+        yield return new object[] { 123, "cento e vinte e três" };
+        yield return new object[] { 200, "duzentos" };
+        yield return new object[] { 300, "trezentos" };
+        yield return new object[] { 400, "quatrocentos" };
+        yield return new object[] { 500, "quinhentos" };
+        yield return new object[] { 600, "seiscentos" };
+        yield return new object[] { 700, "setecentos" };
+        yield return new object[] { 800, "oitocentos" };
+        yield return new object[] { 900, "novecentos" };
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
