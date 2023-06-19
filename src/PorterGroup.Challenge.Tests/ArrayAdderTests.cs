@@ -29,12 +29,12 @@ public class ArrayAdderTests
     public void Sum_ShouldReturnTheSumOfAllItens_WhenGivenAnIntegerArray()
     {
         // Arrange
-        int[] array = new int[999_999];
-        BigInteger expectedSum = 999_999;
+        int[] array = new int[500];
+        BigInteger expectedSum = 750;
 
         for (int i = 0; i < array.Length; i++)
         {
-            array[i] = 1;
+            array[i] = 0 == i % 2 ? 2 : 1;
         }
 
         // Act

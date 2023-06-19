@@ -21,6 +21,14 @@ Esse problema foi bem divertido de resolver, mas também foi bem desafiador. Imp
 Por fim, eu decidi tornar a class estática. Uma vez que a classe não precisa se comportar de forma diferente de acordo com dependências ou parâmetros, a implementação se torna muito semelhante aos métodos estáticos de "Math", como "Pow" ou "Abs", ou mesmo à implementação estática da serialização de "JsonSerializer".
 
 ## Como você lidou com a performance na implementação do desafio 2, considerando que o array pode ter até 1 milhão de números?
+
 O algoritmo implementado usa processamento paralelo para otimizar o máximo possível o tempo de execução. Além do problema de performance, overflows podem acontecer quando a soma ultrapassa os limites dos tipos inteiros do .Net. Para isso, foi utilizado um mecanismo de soma parcial usando "long" e soma final usando "BigInteger", cuja a única limitação possível é a quantidade de memória utilizada na alocação. Para evitar OutOfMemoryExceptions, o algoritmo protege a soma com uma estrutura try e retorna um erro caso não haja memória suficiente para a alocação do "BigInteger". 
 
 Com relação à soma parcial e ao processamento paralelo, threads diferentes poderiam acessar a variável de soma parcial (long) ao mesmo tempo e comprometer o resultado. Para evitar isso, um mecanismo de locking foi utilizado. Outro problema é que somas maiores que um long.MaxValue não geram erro por padrão. Elas apenas sujam a alocação de memória da variável. Para evitar isso, um mecanismo de "checking" foi utilizado. Ele força uma OverflowException quando houver.
+
+## Como você implementou a função que remove objetos repetidos na implementação do desafio 4? Quais foram os principais desafios encontrados?
+
+A função foi implementada como um método de extensão para qualquer implementação genérica de IList. Na implementação um hashset é utilizado. O Hashset é uma estrtura de dados de alta performance que não permite itens duplicados. Após o hashset ser instanciado, ele é convertido novamente numa lista genérica e retornado.
+
+A princípio eu havia considerado percorrer a lista e adicionar a uma segunda caso o item não estivesse nesta segunda. Dessa forma, o algoritmo não adicionaria os duplicados pois a verificação da segunda lista não permitiria. 
+Sabendo da existência do Hashset, fica mais fácil utilizar uma coleção de alta performance pré-existente no framework.

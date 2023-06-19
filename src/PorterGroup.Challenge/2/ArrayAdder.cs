@@ -39,7 +39,7 @@ public class ArrayAdder
         }
         catch (OutOfMemoryException ex)
         {
-            throw new Exception("There's no enough memory to perform the Sum.", ex);
+            Environment.FailFast(string.Format("Out of Memory: {0}", ex.Message));
         }
 
         return totalSum;
