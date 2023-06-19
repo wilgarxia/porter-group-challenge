@@ -2,14 +2,12 @@ namespace PorterGroup.Challenge.Tests;
 
 public class NumberConverterTests
 {
-    private readonly INumberConverter _sut = new NumberConverter(); 
-
     [Theory]
     [ClassData(typeof(ConvertToWordsData))]
-    public void ConvertToWordsShouldReturnNumberWordsWhenGivenAnIntegerNumber(int number, string expected)
+    public void ToWords_ShouldReturnNumberInWords_WhenGivenAnIntegerNumber(int number, string expected)
     {
         // Act
-        var result = _sut.ToWords(number);
+        var result = NumberConverter.ToWords(number);
 
         // Assert
         result.Should().Be(expected);

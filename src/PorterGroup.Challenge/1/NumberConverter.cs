@@ -2,15 +2,15 @@
 
 namespace PorterGroup.Challenge;
 
-public sealed class NumberConverter : INumberConverter
+public static class NumberConverter
 {
-    public string ToWords(int number) 
+    public static string ToWords(int number) 
     {
         if (number < 0)
             return $"menos {ToWords(Math.Abs(number))}";
 
-        if (CheckPredefinedValues(number) is var result && result.Success)
-            return result.Value;
+        if (Words.ContainsKey(number))
+            return Words[number];
 
         StringBuilder numberAsWords = new();
         bool appendAnd = false;
@@ -18,16 +18,16 @@ public sealed class NumberConverter : INumberConverter
         for (byte i = 0; number > 0; i++, number /= 1000)
         {
             int hundreds = number % 1000;
-            int thousands = (int)Math.Pow(1000, i);
-
+            
             if (0 == hundreds)
                 continue;
             
-            string hundredsChunk = GetHundreds(hundreds);
+            int thousands = (int)Math.Pow(1000, i);
+            string hundredsWords = GetHundredsWords(hundreds);
 
             if (0 == i) // Hundreds
             {
-                numberAsWords.Insert(0, hundredsChunk);
+                numberAsWords.Insert(0, hundredsWords);
                 appendAnd = hundreds <= 100;
                 appendAnd = appendAnd || hundreds % 100 == 0;
             }
@@ -41,7 +41,7 @@ public sealed class NumberConverter : INumberConverter
                 string shortScaleChunk = 1 == hundreds ? ShortScaleWords[thousands] : ShortScalePluralWords[thousands];
                 string finalChunk = appendAnd ? " e " : " ";
 
-                numberAsWords.Insert(0, $"{hundredsChunk} {shortScaleChunk}{finalChunk}");
+                numberAsWords.Insert(0, $"{hundredsWords} {shortScaleChunk}{finalChunk}");
                 appendAnd = false;
             }
         }
@@ -49,22 +49,11 @@ public sealed class NumberConverter : INumberConverter
         return numberAsWords.ToString().Trim();
     }
 
-    private static (bool Success, string Value) CheckPredefinedValues(int number)
+    private static string GetHundredsWords(int number)
     {
-        if (UnitsWords.ContainsKey(number))
-            return (true, UnitsWords[number]);
+        if (Words.ContainsKey(number))
+            return Words[number];
 
-        if (TensWords.ContainsKey(number))
-            return (true, TensWords[number]);
-
-        if (HundredsWords.ContainsKey(number))
-            return (true, HundredsWords[number]);
-
-        return (false, string.Empty);
-    }
-
-    private static string GetHundreds(int number)
-    {
         StringBuilder hundredsWords = new();
         int hundreds = number / 100 * 100;
         int tens = number % 100 / 10;
@@ -72,40 +61,40 @@ public sealed class NumberConverter : INumberConverter
         
         if (0 == hundreds)
         {
-            hundredsWords.Append(GetTensAndOnes(tens, ones));
+            hundredsWords.Append(GetTensAndOnesWords(tens, ones));
             return hundredsWords.ToString();
         }
 
         if (tens > 0 || ones > 0)
         {
-            hundredsWords.Append(100 == hundreds ? "cento" : HundredsWords[hundreds]);
+            hundredsWords.Append(100 == hundreds ? "cento" : Words[hundreds]);
             hundredsWords.Append(" e ");
-            hundredsWords.Append(GetTensAndOnes(tens, ones));
+            hundredsWords.Append(GetTensAndOnesWords(tens, ones));
         }
         else
-            hundredsWords.Append(HundredsWords[hundreds]);
+            hundredsWords.Append(Words[hundreds]);
 
         return hundredsWords.ToString();
     }     
 
-    private static string GetTensAndOnes(int tens, int ones)
+    private static string GetTensAndOnesWords(int tens, int ones)
     {
         if (0 == tens || 1 == tens)
-            return UnitsWords[tens * 1 + ones];
+            return Words[tens * 1 + ones];
 
         if (0 == ones)
-            return TensWords[tens * 10];
+            return Words[tens * 10];
 
         StringBuilder tensString = new();
 
-        tensString.Append(TensWords[tens * 10]);
+        tensString.Append(Words[tens * 10]);
         tensString.Append(" e ");
-        tensString.Append(UnitsWords[ones]);
+        tensString.Append(Words[ones]);
 
         return tensString.ToString();
     }
 
-    private static readonly Dictionary<int, string> UnitsWords = new()
+    private static readonly Dictionary<int, string> Words = new()
     {
         { 0, "zero"}, 
         { 1, "um" }, 
@@ -126,11 +115,7 @@ public sealed class NumberConverter : INumberConverter
         { 16, "dezesseis" }, 
         { 17, "dezessete" }, 
         { 18, "dezoito" }, 
-        { 19, "dezenove" }        
-    };
-
-    private static readonly Dictionary<int, string> TensWords = new()
-    {
+        { 19, "dezenove" },
         { 20, "vinte" }, 
         { 30, "trinta" }, 
         { 40, "quarenta" }, 
@@ -138,11 +123,7 @@ public sealed class NumberConverter : INumberConverter
         { 60, "sessenta" }, 
         { 70, "setenta" }, 
         { 80, "oitenta" }, 
-        { 90, "noventa" }
-    };
-
-    private static readonly Dictionary<int, string> HundredsWords = new()
-    {
+        { 90, "noventa" },
         { 100, "cem" }, 
         { 200, "duzentos" }, 
         { 300, "trezentos" }, 
@@ -151,7 +132,7 @@ public sealed class NumberConverter : INumberConverter
         { 600, "seiscentos" }, 
         { 700, "setecentos" }, 
         { 800, "oitocentos" }, 
-        { 900, "novecentos" }
+        { 900, "novecentos" }          
     };
     
     // https://simple.wikipedia.org/wiki/Long_and_short_scales#Short_scale
