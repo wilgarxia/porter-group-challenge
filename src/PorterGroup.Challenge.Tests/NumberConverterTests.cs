@@ -76,6 +76,8 @@ public class ConvertToWordsData : IEnumerable<object[]>
         yield return new object[] { 2_000, "dois mil" };
         yield return new object[] { 2_001, "dois mil e um" };
         yield return new object[] { 2_023, "dois mil e vinte e três" };
+        yield return new object[] { 100_100, "cem mil e cem" };
+        yield return new object[] { 100_101, "cem mil cento e um" };
         yield return new object[] { 1_000_000, "um milhão" };
         yield return new object[] { 1_000_001, "um milhão e um" };
         yield return new object[] { 1_000_100, "um milhão e cem" };
