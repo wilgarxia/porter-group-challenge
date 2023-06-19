@@ -26,6 +26,10 @@ O algoritmo implementado usa processamento paralelo para otimizar o máximo poss
 
 Com relação à soma parcial e ao processamento paralelo, threads diferentes poderiam acessar a variável de soma parcial (long) ao mesmo tempo e comprometer o resultado. Para evitar isso, um mecanismo de locking foi utilizado. Outro problema é que somas maiores que um long.MaxValue não geram erro por padrão. Elas apenas sujam a alocação de memória da variável. Para evitar isso, um mecanismo de "checking" foi utilizado. Ele força uma OverflowException quando houver.
 
+## Como você lidou com os possíveis erros de entrada na implementação do desafio 3, como uma divisão por zero ou uma expressão inválida?
+A função utiliza regex para remover espaços em branco e quaisquer caracteres que não sejam um símbolo de operação matemática básica (+, -, *, /) ou dígitos numéricos. Operadores que não possuem operandos a sua direita (5 + 2 + - 10) são tratados como se possuíssem um zero à direita. (No exemplo anterior ficaria: 5 + 2 + 0 - 10).
+Divisões por zero estouram uma exception do tipo DivisionByZeroException, seguindo o mesmo padrão adotado pelas funções da biblioteca padrão.
+
 ## Como você implementou a função que remove objetos repetidos na implementação do desafio 4? Quais foram os principais desafios encontrados?
 
 A função foi implementada como um método de extensão para qualquer implementação genérica de IList. Na implementação um hashset é utilizado. O Hashset é uma estrtura de dados de alta performance que não permite itens duplicados. Após o hashset ser instanciado, ele é convertido novamente numa lista genérica e retornado.
