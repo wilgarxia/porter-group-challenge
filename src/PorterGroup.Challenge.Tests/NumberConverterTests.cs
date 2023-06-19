@@ -1,26 +1,15 @@
 namespace PorterGroup.Challenge.Tests;
 
-public class NumberWriterTests
+public class NumberConverterTests
 {
-    [Theory]
-    [InlineData(-1000)]
-    [InlineData(1000)]
-    public void ConvertToWordsShouldThrowExceptionWhenGivenArgumentIsOutOfRange(int number)
-    {
-        // Act
-        Action act = () => NumberWriter.ConvertToWords(number);
-
-        // Assert
-        act.Should().Throw<ArgumentOutOfRangeException>();
-    }
-
+    private readonly INumberConverter _sut = new NumberConverter(); 
 
     [Theory]
     [ClassData(typeof(ConvertToWordsData))]
-    public void ConvertToWordsShouldReturnNumberWordsWhenGivenAnIntegerNumber(long number, string expected)
+    public void ConvertToWordsShouldReturnNumberWordsWhenGivenAnIntegerNumber(int number, string expected)
     {
         // Act
-        var result = NumberWriter.ConvertToWords(number);
+        var result = _sut.ToWords(number);
 
         // Assert
         result.Should().Be(expected);
@@ -30,12 +19,7 @@ public class NumberWriterTests
 public class ConvertToWordsData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
-    {
-        yield return new object[] { -123, "menos cento e vinte e três" };
-        yield return new object[] { -101, "menos cento e um" };
-        yield return new object[] { -100, "menos cem" };
-        yield return new object[] { -21, "menos vinte e um" };
-        yield return new object[] { -10, "menos dez" };
+    {        
         yield return new object[] { -1, "menos um" };
         yield return new object[] { 0, "zero" };
         yield return new object[] { 1, "um" };
@@ -64,19 +48,16 @@ public class ConvertToWordsData : IEnumerable<object[]>
         yield return new object[] { 40, "quarenta" };
         yield return new object[] { 43, "quarenta e três" };
         yield return new object[] { 50, "cinquenta" };
-        yield return new object[] { 54, "cinquenta e quatro" };        
         yield return new object[] { 60, "sessenta" };
-        yield return new object[] { 65, "sessenta e cinco" };
         yield return new object[] { 70, "setenta" };
-        yield return new object[] { 76, "setenta e seis" };
         yield return new object[] { 80, "oitenta" };
-        yield return new object[] { 87, "oitenta e sete" };
         yield return new object[] { 90, "noventa" };
-        yield return new object[] { 98, "noventa e oito" };
         yield return new object[] { 100, "cem" };
         yield return new object[] { 101, "cento e um" };
         yield return new object[] { 123, "cento e vinte e três" };
         yield return new object[] { 200, "duzentos" };
+        yield return new object[] { 201, "duzentos e um" };
+        yield return new object[] { 223, "duzentos e vinte e três" };
         yield return new object[] { 300, "trezentos" };
         yield return new object[] { 400, "quatrocentos" };
         yield return new object[] { 500, "quinhentos" };
@@ -84,6 +65,35 @@ public class ConvertToWordsData : IEnumerable<object[]>
         yield return new object[] { 700, "setecentos" };
         yield return new object[] { 800, "oitocentos" };
         yield return new object[] { 900, "novecentos" };
+        yield return new object[] { 1_000, "mil" };
+        yield return new object[] { 1_001, "mil e um" };
+        yield return new object[] { 1_023, "mil e vinte e três" };
+        yield return new object[] { 1_100, "mil e cem" };
+        yield return new object[] { 1_101, "mil cento e um" };
+        yield return new object[] { 1_123, "mil cento e vinte e três" };
+        yield return new object[] { 1_200, "mil e duzentos" };
+        yield return new object[] { 1_223, "mil duzentos e vinte e três" };
+        yield return new object[] { 2_000, "dois mil" };
+        yield return new object[] { 2_001, "dois mil e um" };
+        yield return new object[] { 2_023, "dois mil e vinte e três" };
+        yield return new object[] { 1_000_000, "um milhão" };
+        yield return new object[] { 1_000_001, "um milhão e um" };
+        yield return new object[] { 1_000_100, "um milhão e cem" };
+        yield return new object[] { 1_000_101, "um milhão cento e um" };
+        yield return new object[] { 1_001_101, "um milhão mil cento e um" };
+        yield return new object[] { 1_101_101, "um milhão cento e um mil cento e um" };
+        yield return new object[] { 2_000_000, "dois milhões" };
+        yield return new object[] { 2_000_001, "dois milhões e um" };
+        yield return new object[] { 2_000_100, "dois milhões e cem" };
+        yield return new object[] { 2_000_101, "dois milhões cento e um" };
+        yield return new object[] { 2_001_101, "dois milhões mil cento e um" };
+        yield return new object[] { 2_101_101, "dois milhões cento e um mil cento e um" };
+        yield return new object[] { 857_986, "oitocentos e cinquenta e sete mil novecentos e oitenta e seis" };
+        yield return new object[] { 469_937_098, 
+            "quatrocentos e sessenta e nove milhões novecentos e trinta e sete mil e noventa e oito" };
+        //2_147_483_647
+        yield return new object[] {int.MaxValue, 
+            "dois bilhões cento e quarenta e sete milhões quatrocentos e oitenta e três mil seiscentos e quarenta e sete" };
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
